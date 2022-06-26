@@ -57,14 +57,23 @@ def main():
         # Building out the "Information" page
         if selection == "Visualisation":
             st.info("General Information")
-            # You can read a markdown file from supporting resources folder
-            st.markdown(
-                "This app helps predict climate change sentiment. Enter text to get your prediction")
 
-            st.subheader("Raw Twitter data and label")
+            uploaded_file = st.file_uploader(
+                label="Upload a csv or excel file for analysis", type=['csv', 'xlsx'])
+            # Load the a file to the application
+            global df
+            if uploaded_file is not None:
+                try:
+                    df = pd.read_csv(uploaded_file)
+                except:
+                    df = pd.read_excel(uploaded_file)
+
             if st.checkbox('Show raw data'):  # data is hidden if box is unchecked
                 # will write the df to the page
-                st.write(raw[['sentiment', 'message']])
+                try:
+                    st.write(df)
+                except:
+                    st.write("Upload file")
 
         # Building out the predication page
         if selection == "Prediction":
