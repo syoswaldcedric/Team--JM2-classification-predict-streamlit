@@ -1,28 +1,3 @@
-"""
-
-    Simple Streamlit webserver application for serving developed classification
-	models.
-
-    Author: Explore Data Science Academy.
-
-    Note:
-    ---------------------------------------------------------------------
-    Please follow the instructions provided within the README.md file
-    located within this directory for guidance on how to use this script
-    correctly.
-    ---------------------------------------------------------------------
-
-    Description: This file is used to launch a minimal streamlit web
-	application. You are expected to extend the functionality of this script
-	as part of your predict project.
-
-	For further help with the Streamlit framework, see:
-
-	https://docs.streamlit.io/en/latest/
-
-"""
-
-# authentication dependencies
 import pickle
 from pathlib import Path
 import streamlit_authenticator as stauth
@@ -51,43 +26,66 @@ def main():
     # Creates a main title and subheader on your page -
     # these are static across all pages
     st.title("Tweet Classifer")
-    st.subheader("Climate change tweet classification")
+    names = ["Syeni Oswald", "Arome Emmanuel", "Murtala Umar", "explore"]
+    usernames = ["soswald", "emmanuel", "Umar", "explore"]
 
-    # Creating sidebar with selection box -
-    # you can create multiple pages this way
-    options = ["Prediction", "Information"]
-    selection = st.sidebar.selectbox("Choose Option", options)
+    # load hashed passwords
+    file_path = Path(__file__).parent / "hased_pw.pkl"
+    with file_path.open("rb") as file:
+        hashed_passwords = pickle.load(file)
 
-    # Building out the "Information" page
-    if selection == "Information":
-        st.info("General Information")
-        # You can read a markdown file from supporting resources folder
-        st.markdown("Some information here")
+    authenticator = stauth.Authenticate(names, usernames, hashed_passwords,
+                                        "home screen", "abcdef", cookie_expiry_days=10)
 
-        st.subheader("Raw Twitter data and label")
-        if st.checkbox('Show raw data'):  # data is hidden if box is unchecked
-            # will write the df to the page
-            st.write(raw[['sentiment', 'message']])
+    names, authentication_status, username = authenticator.login(
+        "Login", "main")
 
-    # Building out the predication page
-    if selection == "Prediction":
-        st.info("Prediction with ML Models")
-        # Creating a text box for user input
-        tweet_text = st.text_area("Enter Text", "Type Here")
+    if authentication_status == False:
+        st.error("Username/password is incorrect")
 
-        if st.button("Classify"):
-            # Transforming user input with vectorizer
-            vect_text = tweet_cv.transform([tweet_text]).toarray()
-            # Load your .pkl file with the model of your choice + make predictions
-            # Try loading in multiple models to give the user a choice
-            predictor = joblib.load(
-                open(os.path.join("resources/Logistic_regression.pkl"), "rb"))
-            prediction = predictor.predict(vect_text)
+    if authentication_status == None:
+        st.warning("Enter your username and password")
 
-            # When model has successfully run, will print prediction
-            # You can use a dictionary or similar structure to make this output
-            # more human interpretable.
-            st.success("Text Categorized as: {}".format(prediction))
+    if authentication_status:
+        # Creating sidebar with selection box -
+        # you can create multiple pages this way
+        options = ["Prediction", "Visualisation",
+                   "Documentation", "Contact us"]
+        selection = st.sidebar.selectbox("Choose Option", options)
+
+        # Building out the "Information" page
+        if selection == "Visualisation":
+            st.info("General Information")
+            # You can read a markdown file from supporting resources folder
+            st.markdown(
+                "This app helps predict climate change sentiment. Enter text to get your prediction")
+
+            st.subheader("Raw Twitter data and label")
+            if st.checkbox('Show raw data'):  # data is hidden if box is unchecked
+                # will write the df to the page
+                st.write(raw[['sentiment', 'message']])
+
+        # Building out the predication page
+        if selection == "Prediction":
+            st.info("Prediction with ML Models")
+            # Creating a text box for user input
+            tweet_text = st.text_area("Enter Text", "Type Here")
+
+            if st.button("Classify"):
+                # Transforming user input with vectorizer
+                vect_text = tweet_cv.transform([tweet_text]).toarray()
+                # Load your .pkl file with the model of your choice + make predictions
+                # Try loading in multiple models to give the user a choice
+                predictor = joblib.load(
+                    open(os.path.join("resources/svc_model.pkl"), "rb"))
+                prediction = predictor.predict(vect_text)
+
+                # When model has successfully run, will print prediction
+                # You can use a dictionary or similar structure to make this output
+                # more human interpretable.
+                st.success("Text Categorized as: {}".format(prediction))
+        # logout
+        authenticator.logout("Logout", "sidebar")
 
 
 # Required to let Streamlit instantiate our web app.
