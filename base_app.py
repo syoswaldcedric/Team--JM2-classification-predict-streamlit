@@ -125,6 +125,13 @@ def main():
                 # more human interpretable.
                 st.success("Text Categorized as: {}".format(word))
 
+        if selection == "Contact us":
+            st.title("Contact us")
+            st.write("The feedback of your experience with our system matters")
+
+            email = st.text_input("Enter you email")
+            message = st.text_area("Enter your message")
+            st.button("Send")
         # logout
         authenticator.logout("Logout", "sidebar")
 
