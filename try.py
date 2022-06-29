@@ -11,7 +11,13 @@ from nltk.corpus import stopwords  # importing Stopwords
 # sns.set()   # setting plot style
 
 
-df = st.file_uploader("Upload a file")
+uploaded_file = st.file_uploader("Upload a file")
+global df
+if uploaded_file is not None:
+    try:
+        df = pd.read_csv(uploaded_file)
+    except:
+        df = pd.read_excel(uploaded_file)
 st.write(df)
 
 
@@ -25,7 +31,7 @@ df['message'] = df['message'].replace(
 df['message'] = df['message'].str.lower()
 
 # Tokenising the test data
-tokenised_tweet = dft['message'].apply(
+tokenised_tweet = df['message'].apply(
     lambda x: x.split())  # Tokenising the train data
 df['tokens'] = tokenised_tweet
 

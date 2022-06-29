@@ -1,8 +1,8 @@
 # Importing pre-process packages
-import pandas as pd
-import os
-import joblib
+
+# Streamlit dependencies
 import streamlit as st
+# Authentication dependencies
 import streamlit_authenticator as stauth
 from pathlib import Path
 import pickle
@@ -15,11 +15,16 @@ import nltk  # Importing nltk for preprocessing the datasets
 from nltk.corpus import stopwords  # importing Stopwords
 # sns.set()   # setting plot style
 
-
-# Authentication dependencies
-# Streamlit dependencies
+# for image
+from PIL import Image
 
 # Data dependencies
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import os
+import joblib
+
 
 # Vectorizer
 news_vectorizer = open("resources/tfidfvect.pkl", "rb")
@@ -37,7 +42,7 @@ def main():
 
     # Creates a main title and subheader on your page -
     # these are static across all pages
-    st.title("Tweet Classifer")
+
     names = ["Syeni Oswald", "Arome Emmanuel", "Murtala Umar", "explore"]
     usernames = ["soswald", "emmanuel", "Umar", "explore"]
 
@@ -63,11 +68,12 @@ def main():
         # you can create multiple pages this way
         options = ["Prediction", "Visualisation",
                    "Documentation", "Contact us"]
-        selection = st.sidebar.selectbox("Choose Option", options)
+
+        selection = st.sidebar.radio("Choose Option", options)
 
         # Building out the "Information" page
         if selection == "Visualisation":
-            st.info("General Information")
+            st.title("Data Analysis")
 
             uploaded_file = st.file_uploader(
                 label="Upload a csv or excel file for analysis", type=['csv', 'xlsx'])
@@ -86,13 +92,48 @@ def main():
                     st.write(df)
                 except:
                     st.write("Upload file")
+            if st.checkbox('Show insight'):
+                raw = pd.read_csv("resources/train.csv")
+
+                st.write("show the data")
+                st.title("Tweet Classifery EDA")
+
+                # You can read a markdown file from supporting resources folder
+                st.markdown(
+                    "This section contains insights on the loaded data")
+                st.subheader("First rows of the clean data")
+                st.dataframe(raw.head())
+
+                # taking a look at the labels
+                st.subheader("Most used words in the Dataset")
+                image = Image.open('resources/imgs/word_cloud.png')
+                st.image(image, caption='Word Cloud')
+
+                st.subheader("First 5 rows of the Dataset")
+                st.write(raw['sentiment'].value_counts())
+                st.subheader("Percentage of each group")
+                col1, col2, col3, col4 = st.columns(4)
+                col1.metric("PRO tweets '1' ", "52.25 %", "Supports")
+                col2.metric("Nuetral tweets '0' ", "17.55 %",
+                            "Neither supports nor refutes", delta_color="off")
+                col3.metric("NPOR  '-1' ", "9.08 %",
+                            "Do not believe", delta_color="inverse")
+                col4.metric("News '2' ", "21.10 %", "Climate change news")
+                st.markdown("A countplot of the labels")
+
+                def countplot():
+                    fig = plt.figure(figsize=(10, 4))
+                    sns.countplot(x="sentiment", data=raw)
+                    st.pyplot(fig)
+                countplot()
 
         # Building out the predication page
         if selection == "Prediction":
+            st.title("Prediction")
             st.info("Prediction with ML Models")
             option = st.selectbox(
                 'Select the model from the Dropdown',
-                ('Logistic Regression', 'SVC'))
+                ('Logistic Regression', 'Vectoriser', 'SVC'))
             # Creating a text box for user input
             tweet_text = st.text_area("Enter Text", "Type Here")
 
@@ -100,7 +141,9 @@ def main():
             if option == 'Logistic Regression':
                 model = "resources/logistic_regression.pkl"
             elif option == 'SVC':
-                model = "resources/svc_model.pkl"
+                model = "resources/logistic_regression.pkl"
+            elif option == 'Vectoriser':
+                model = "resources/logistic_regression.pkl"
 
             if st.button("Classify"):
                 # Transforming user input with vectorizer
@@ -132,6 +175,9 @@ def main():
             email = st.text_input("Enter you email")
             message = st.text_area("Enter your message")
             st.button("Send")
+
+        if selection == "Documentation":
+            st.title("Documentation")
         # logout
         authenticator.logout("Logout", "sidebar")
 
