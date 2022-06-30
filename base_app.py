@@ -51,8 +51,8 @@ def main():
     with file_path.open("rb") as file:
         hashed_passwords = pickle.load(file)
 
-    authenticator = stauth.Authenticate(names, usernames, hashed_passwords,
-                                        "home screen", "abcdef", cookie_expiry_days=10)
+    authenticator = stauth.Authenticate(
+        names, usernames, hashed_passwords, "home screen", "abcdef", cookie_expiry_days=10)
 
     names, authentication_status, username = authenticator.login(
         "Login", "main")
@@ -66,8 +66,8 @@ def main():
     if authentication_status:
         # Creating sidebar with selection box -
         # you can create multiple pages this way
-        options = ["Prediction", "Visualisation",
-                   "Documentation", "Contact us"]
+        options = ["Prediction", "Visualisation", "About us",
+                   "Contact us", "Documentation"]
 
         selection = st.sidebar.radio("Choose Option", options)
 
@@ -111,12 +111,13 @@ def main():
 
                 st.subheader("First 5 rows of the Dataset")
                 st.write(raw['sentiment'].value_counts())
+
                 st.subheader("Percentage of each group")
                 col1, col2, col3, col4 = st.columns(4)
                 col1.metric("PRO tweets '1' ", "52.25 %", "Supports")
                 col2.metric("Nuetral tweets '0' ", "17.55 %",
                             "Neither supports nor refutes", delta_color="off")
-                col3.metric("NPOR  '-1' ", "9.08 %",
+                col3.metric("ANTI  '-1' ", "9.08 %",
                             "Do not believe", delta_color="inverse")
                 col4.metric("News '2' ", "21.10 %", "Climate change news")
                 st.markdown("A countplot of the labels")
@@ -172,12 +173,22 @@ def main():
             st.title("Contact us")
             st.write("The feedback of your experience with our system matters")
 
-            email = st.text_input("Enter you email")
+            email = st.text_input("Enter your email")
             message = st.text_area("Enter your message")
             st.button("Send")
 
         if selection == "Documentation":
             st.title("Documentation")
+
+        if selection == "About us":
+            st.title("Eagle Analytics")
+            st.subheader("Who are we?")
+            st.write(
+                "Eagle Analytics is a freelance tech startup specialised in Data Science, Machine Learning, Data Analysis, and Business Intelligence. ")
+            st.write("Our team of expert scientists and researchers is dedicated to helping companies derive insightful information from existing data. By doing so Eagle Analytics hardwork is oriented in facilitating decision making as well prediction in business setting.")
+            st.write(
+                "Our vision is to make the world a better place through hidden insight in data")
+            st.subheader("Meet the team")
         # logout
         authenticator.logout("Logout", "sidebar")
 
