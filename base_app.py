@@ -5,13 +5,7 @@ from streamlit_option_menu import option_menu
 
 # Streamlit dependencies
 import streamlit as st
-# Authentication dependencies
-import streamlit_authenticator as stauth
-from pathlib import Path
-import pickle
-from nltk import SnowballStemmer, PorterStemmer, LancasterStemmer
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize, TreebankWordTokenizer
+
 import string
 import re
 import nltk  # Importing nltk for preprocessing the datasets
