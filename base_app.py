@@ -8,9 +8,6 @@ import streamlit as st
 
 import string
 import re
-import nltk  # Importing nltk for preprocessing the datasets
-from nltk.corpus import stopwords  # importing Stopwords
-# sns.set()   # setting plot style
 
 # for image
 from PIL import Image
