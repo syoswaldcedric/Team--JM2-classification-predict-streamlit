@@ -1,3 +1,6 @@
+# navigation dependecy
+from streamlit_option_menu import option_menu
+
 # Importing pre-process packages
 
 # Streamlit dependencies
@@ -66,10 +69,17 @@ def main():
     if authentication_status:
         # Creating sidebar with selection box -
         # you can create multiple pages this way
-        options = ["Prediction", "Visualisation", "About us",
-                   "Contact us", "Documentation"]
 
-        selection = st.sidebar.radio("Choose Option", options)
+        with st.sidebar:
+            selection = option_menu(
+                menu_title="Main Menu",
+                options=["Prediction", "Visualisation", "About us",
+                           "Contact us", "Documentation"],
+                icons=["emoji-expressionless",
+                       "robot", "people-fill", "phone", "book"],
+                menu_icon="cast",
+                default_index=0
+            )
 
         # Building out the "Information" page
         if selection == "Visualisation":
@@ -109,7 +119,7 @@ def main():
                 image = Image.open('resources/imgs/word_cloud.png')
                 st.image(image, caption='Word Cloud')
 
-                st.subheader("First 5 rows of the Dataset")
+                st.subheader("Classification Distribution")
                 st.write(raw['sentiment'].value_counts())
 
                 st.subheader("Percentage of each group")
@@ -171,14 +181,48 @@ def main():
 
         if selection == "Contact us":
             st.title("Contact us")
-            st.write("The feedback of your experience with our system matters")
+            col1, col2 = st.columns(2)
+            with col1:
 
-            email = st.text_input("Enter your email")
-            message = st.text_area("Enter your message")
-            st.button("Send")
+                st.subheader("Contact info")
+                st.write("Cola Street, Near ATTC,")
+                st.write("Adjacent Sociate Generale, Head Office,")
+                st.write("Kokomlemle, P.O. Box AN0000, Kenya")
+                st.write("Telephone:+233 00 111 2222")
+                st.write("WhatsApp:+234 210 12344 1390")
+                st.write("Email: eagleanalytics@gmail.com")
+                st.write("Website: eagleanalytics.com")
+            with col2:
+                st.subheader("Send Us")
+                email = st.text_input("Enter your email")
+                message = st.text_area("Enter your message")
+                st.button("Send")
 
         if selection == "Documentation":
             st.title("Documentation")
+            st.subheader("Table of content")
+            st.write("1. Get Started")
+            st.write("2. Select Page")
+            st.write("3. Predict")
+            st.write("4. Visualisation")
+            st.write("5.About us")
+            st.write("")
+            st.subheader("1. Get Started")
+            st.write(
+                "To have access to the developed solutiion first start by login to the system by puting your username and password")
+            st.subheader("2. Select Page")
+            st.write("Various pages are available in the application. The various ")
+            st.subheader("3. Predict")
+            st.write(
+                "To predict select your the model you want to use for the prediction")
+            st.write("Type your text and click on classify")
+            st.subheader("4. Visualisation")
+            st.write("To visualize a new datas set load an excel or csv file")
+            st.write("Click on Show data to visualize the data")
+            st.write("Click on Show Insight to have more information on the data")
+            st.subheader("5. About us")
+            st.write("Send us an email")
+            st.write("")
 
         if selection == "About us":
             st.title("Eagle Analytics")
@@ -189,6 +233,74 @@ def main():
             st.write(
                 "Our vision is to make the world a better place through hidden insight in data")
             st.subheader("Meet the team")
+            # team members
+            Arome = Image.open('resources/imgs/Arome.png')
+            Umar = Image.open('resources/imgs/Umar.png')
+            Soala = Image.open('resources/imgs/Soala.png')
+            Johnson = Image.open('resources/imgs/Johnson.png')
+            Oswald = Image.open('resources/imgs/Oswald.png')
+            Silindile = Image.open('resources/imgs/Silindile.png')
+            # Arome
+            col1, col2 = st.columns(2)
+            with col1:
+                st.image(Arome)
+            with col2:
+                st.subheader("Emmanuel Uloko (CEO)")
+                st.write("Emmanuel has his PhD in Business Intellingence and over 15 years of experience running most successful businesses like Google, Microsoft, Oracle and Explore AI")
+                st.write(
+                    "With this blend of skills and experience the CEO and his team has helped over 250 startups improve their service")
+
+            # Oswald
+            col1, col2 = st.columns(2)
+            with col1:
+                st.image(Oswald)
+            with col2:
+                st.subheader("Oswald Cedric Syeni (CTO)")
+                st.write("Being a Master holder in Machine learning from the University of Michigan, Oswald developed the machine learning algorithm for Tesla self driving and was the team lead for its implementation")
+                st.write("He has also been CTO of numero organizations like Alibaba, Jumia, and Amazone where he has gained practinal knowledge that he put in use for the succcess of the startup")
+
+            # Umar
+            col1, col2 = st.columns(2)
+            with col1:
+                st.image(Umar)
+            with col2:
+                st.subheader("Murtala Umar Adamu (MD)")
+                st.write(
+                    "Umar has a master in Project Management from Havard University and has applied his knowlege in numerous fortune Startup")
+                st.write("During his 30 years of experience he has managed the development of well known and successfull product like Iphone 6, Iphone X, Iphone 11 Pro, and recently Samsung 22 before he moved to Eagle Analytics ")
+
+            # Silindile
+            col1, col2 = st.columns(2)
+            with col1:
+                st.image(Silindile)
+            with col2:
+                st.subheader("Kuhle Silindile Mbamali (COO)")
+                st.write(
+                    "She has her PhD in Business Administration from Polytechnique University in Canada and is dedicated in successfuly running Business.")
+                st.write("She spent the fifteen years of her successful career at Silicon Valley where she has helped the compamy inscrease its revenue by 80 percent")
+
+            # Johnson
+            col1, col2 = st.columns(2)
+            with col1:
+                st.image(Johnson)
+            with col2:
+                st.subheader("Johnson Amodu (DS)")
+                st.write(
+                    "He has a master of research in Data Science from Tokio University and a graduate student from Explore Data Science Accademy")
+                st.write(
+                    "Over the past seven years he has been part of team team in charged of the Netflix Recommendation System, which has helped the company increase their customer satisfaction by 50 percent")
+
+            # Soala
+            col1, col2 = st.columns(2)
+            with col1:
+                st.image(Soala)
+            with col2:
+                st.subheader("Oluasoala")
+                st.write(
+                    "He has two masters one in Machine Learning from Tokio University and the other in Statiscal analysis from Havard University.")
+                st.write(
+                    "Over the past six years he has been part of team team in charged of the Netflix Recommendation System, which has helped the company increase their customer satisfaction by 50 percent")
+
         # logout
         authenticator.logout("Logout", "sidebar")
 
