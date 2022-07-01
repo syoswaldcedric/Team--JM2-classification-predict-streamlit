@@ -117,11 +117,11 @@ def main():
 
         # model selection options
         if option == 'Logistic Regression':
-            model = "resources/logistic_regression.pkl"
+            model = "resources/Logistic_regression.pkl"
         elif option == 'SVC':
-            model = "resources/logistic_regression.pkl"
+            model = "resources/Logistic_regression.pkl"
         elif option == 'Vectoriser':
-            model = "resources/logistic_regression.pkl"
+            model = "resources/Logistic_regression.pkl"
 
         if st.button("Classify"):
             # Transforming user input with vectorizer
