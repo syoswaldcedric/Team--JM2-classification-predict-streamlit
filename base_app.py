@@ -117,9 +117,9 @@ def main():
 
         # model selection options
         if option == 'Logistic Regression':
-            model = "resources/Logistic_regression.pkl"
+            model = "resources/log_reg_model.pkl"
         elif option == 'SVC':
-            model = "resources/Logistic_regression.pkl"
+            model = "resources/svc1_model.pkl"
         elif option == 'Vectoriser':
             model = "resources/Logistic_regression.pkl"
 
