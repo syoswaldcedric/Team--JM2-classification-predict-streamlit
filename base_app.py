@@ -21,7 +21,7 @@ import joblib
 
 
 # Vectorizer
-news_vectorizer = open("resources/tfidfvect.pkl", "rb")
+news_vectorizer = open("resources/tfVector.pkl", "rb")
 # loading your vectorizer from the pkl file
 tweet_cv = joblib.load(news_vectorizer)
 
