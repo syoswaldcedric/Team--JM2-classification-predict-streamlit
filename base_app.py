@@ -111,7 +111,7 @@ def main():
         st.info("Prediction with ML Models")
         option = st.selectbox(
             'Select the model from the Dropdown',
-            ('Logistic Regression', 'Vectoriser', 'SVC'))
+            ('Logistic Regression', 'MNB', 'SVC'))
         # Creating a text box for user input
         tweet_text = st.text_area("Enter Text", "Type Here")
 
@@ -120,8 +120,8 @@ def main():
             model = "resources/log_reg_model.pkl"
         elif option == 'SVC':
             model = "resources/svc1_model.pkl"
-        elif option == 'Vectoriser':
-            model = "resources/Logistic_regression.pkl"
+        elif option == 'MNB':
+            model = "resources/mnb_model.pkl"
 
         if st.button("Classify"):
             # Transforming user input with vectorizer
